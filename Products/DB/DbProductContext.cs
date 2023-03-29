@@ -39,8 +39,8 @@ public partial class DbProductContext : DbContext
             entity.Property(e => e.Description).IsUnicode(false);
             entity.Property(e => e.IdStatus).HasColumnName("ID_Status");
             entity.Property(e => e.Name).IsUnicode(false);
-            entity.Property(e => e.PriceEnd).HasColumnType("money");
-            entity.Property(e => e.PriceStart).HasColumnType("money");
+            entity.Property(e => e.PriceEnd).IsUnicode(false);
+            entity.Property(e => e.PriceStart).IsUnicode(false); 
 
             entity.HasOne(d => d.IdStatusNavigation).WithMany(p => p.Products)
                 .HasForeignKey(d => d.IdStatus)

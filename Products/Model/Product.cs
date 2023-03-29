@@ -11,9 +11,9 @@ public partial class Product
 
     public string? Description { get; set; }
 
-    public decimal? PriceStart { get; set; }
+    public string? PriceStart { get; set; }
 
-    public decimal? PriceEnd { get; set; }
+    public string? PriceEnd { get; set; }
 
     public byte[]? Foto { get; set; }
 

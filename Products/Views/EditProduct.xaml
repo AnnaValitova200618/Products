@@ -26,7 +26,7 @@
                       SelectedItem="{Binding SelectStatus}" 
                       DisplayMemberPath="Title"/>
             <Label Content="Дата продажи:"/>
-            <DatePicker SelectedDate="{Binding Product.DateOfsale}"/>
+            <DatePicker SelectedDate="{Binding Product.DateOfsale}" IsEnabled="{Binding Block}"/>
         </StackPanel>
         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Image Height="250" Width="250" Source="{Binding Product.Foto}"/>

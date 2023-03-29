@@ -68,19 +68,21 @@ namespace Products.VM
            
             Products = products;
         }
-        DbProductContext db = new DbProductContext();
+        DbProductContext db;
         public MainVM()
         {
+            db = DBInstance.GetInstance();
             db.Database.EnsureCreated();
             db.Products.Load();
             db.Statuses.Load();
-            Products = db.Products.Local.ToObservableCollection();
+            Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
             Statuses = db.Statuses.Local.ToObservableCollection();
 
             AddProduct = new CustomCommand(() =>
             {
                 new EditProduct(new Product()).ShowDialog();
-                Products = new ObservableCollection<Product>(db.Products.Include(s=>s.IdStatusNavigation).Where(s => s.Name.Contains(Search))); ;
+                Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
+
             });
             EditProduct = new CustomCommand(() =>
             {
@@ -93,8 +95,9 @@ namespace Products.VM
                 {
                     
                     new EditProduct(SelectProduct).ShowDialog();
-                    
-                    Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).Where(s => s.Name.Contains(Search)));
+
+                    Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
+
                 }
             });
             Cancel = new CustomCommand(() =>
