@@ -24,6 +24,7 @@ namespace Products.VM
         public CustomCommand AddProduct { get; set; }
         public CustomCommand EditProduct { get; set; }
         public CustomCommand Cancel { get; set; }
+        
         public ObservableCollection<Product> Products 
         { 
             get => products;
@@ -57,12 +58,12 @@ namespace Products.VM
         private void DoSearch()
         {
             ObservableCollection<Product> products = 
-                new ObservableCollection<Product>(db.Products.Where(s => s.Name.Contains(Search)));
+                new ObservableCollection<Product>(db.Products.Include("IdStatusNavigation").Where(s => s.Name.Contains(Search)));
             
 
             if (SelectStatus != null)
             {
-                products = new ObservableCollection<Product>(db.Products.Where(s => s.IdStatus == SelectStatus.Id));
+                products = new ObservableCollection<Product>(db.Products.Include("IdStatusNavigation").Where(s => s.IdStatus == SelectStatus.Id));
             }
            
             Products = products;
@@ -79,7 +80,7 @@ namespace Products.VM
             AddProduct = new CustomCommand(() =>
             {
                 new EditProduct(new Product()).ShowDialog();
-                Products = db.Products.Local.ToObservableCollection();
+                Products = new ObservableCollection<Product>(db.Products.Include(s=>s.IdStatusNavigation).Where(s => s.Name.Contains(Search))); ;
             });
             EditProduct = new CustomCommand(() =>
             {
@@ -90,8 +91,10 @@ namespace Products.VM
                 }
                 else
                 {
+                    
                     new EditProduct(SelectProduct).ShowDialog();
-                    Products = db.Products.Local.ToObservableCollection();
+                    
+                    Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).Where(s => s.Name.Contains(Search)));
                 }
             });
             Cancel = new CustomCommand(() =>
@@ -101,6 +104,7 @@ namespace Products.VM
                 Signal(nameof(Search));
                 Signal(nameof(SelectStatus));
             });
+            
         }
         
     }

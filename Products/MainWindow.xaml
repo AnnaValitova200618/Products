@@ -28,6 +28,7 @@
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Добавить" Command="{Binding AddProduct}"/>
             <Button Content="Редактировать" Command="{Binding EditProduct}"/>
+            
         </StackPanel>
         <ListView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectProduct}">
             <ListView.View>
