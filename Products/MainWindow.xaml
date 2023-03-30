@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Products"
         mc:Ignorable="d"
         Title="" MinHeight="450" MinWidth="800" WindowStartupLocation="CenterScreen">
-    <Grid>
+    <Grid Background="#FFC8743E">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition/>
@@ -15,28 +15,35 @@
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Background="#FFF1C95F" >
             <Label Content="Поиск" FontWeight="Bold"/>
             <TextBox Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}"/>
             <Label Content="Фильтрация по:" FontWeight="Bold"/>
             <Label Content="Статусу"/>
-            <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectStatus}" DisplayMemberPath="Title">
-                
+            <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectStatus}" DisplayMemberPath="Title" BorderBrush="White">
+                <ComboBox.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FFF0F0F0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </ComboBox.Background>
+
             </ComboBox>
-            <Button Content="Сбросить" Command="{Binding Cancel}"/>
+            <Button Height="30" Content="Сбросить" Command="{Binding Cancel}" BorderBrush="{x:Null}" />
         </StackPanel>
         <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Добавить" Command="{Binding AddProduct}"/>
-            <Button Content="Редактировать" Command="{Binding EditProduct}"/>
-            
+            <Button Content="Добавить" Command="{Binding AddProduct}" BorderBrush="{x:Null}" Width="120" Height="30" />
+            <Button Content="Редактировать" Command="{Binding EditProduct}" BorderBrush="{x:Null}" Width="120" Height="30"/>
+            <Button Content="Удалить" Command="{Binding DelProduct}" Width="120" Height="30" BorderBrush="{x:Null}"/>
         </StackPanel>
-        <ListView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectProduct}">
+        <ListView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Products}" SelectedItem="{Binding SelectProduct}" BorderBrush="{x:Null}" Foreground="Black" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}"/>
                     <GridViewColumn Header="Начальная цена" DisplayMemberBinding="{Binding PriceStart, StringFormat={}{0:00} }"/>
                     <GridViewColumn Header="Конечная цена" DisplayMemberBinding="{Binding PriceEnd, StringFormat= {}{0:00}}"/>
                     <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding IdStatusNavigation.Title}"/>
+                    <GridViewColumn Header="Дата продажи" DisplayMemberBinding="{Binding DateOfsale, StringFormat=dd.MM.yy}"/>
                     <GridViewColumn Header="Фото">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>

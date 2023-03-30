@@ -24,7 +24,7 @@ namespace Products.VM
         public CustomCommand AddProduct { get; set; }
         public CustomCommand EditProduct { get; set; }
         public CustomCommand Cancel { get; set; }
-        
+        public CustomCommand DelProduct { get; set; }
         public ObservableCollection<Product> Products 
         { 
             get => products;
@@ -99,6 +99,16 @@ namespace Products.VM
                     Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
 
                 }
+            });
+            DelProduct = new CustomCommand(() =>
+            {
+                if(MessageBox.Show("Вы действительно хотите удалить выбранный продукт", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    DBInstance.GetInstance().Products.Remove(SelectProduct);
+                    DBInstance.GetInstance().SaveChanges();
+                    Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
+                }
+                
             });
             Cancel = new CustomCommand(() =>
             {

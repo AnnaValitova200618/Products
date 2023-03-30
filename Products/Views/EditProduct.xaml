@@ -6,33 +6,40 @@
         xmlns:local="clr-namespace:Products.Views"
         mc:Ignorable="d"
         Title="Редактирование" MinHeight="450" MinWidth="800" WindowStartupLocation="CenterScreen">
-    <Grid>
+    <Grid Background="#FFF1C95F">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto" MinWidth="292" />
         </Grid.ColumnDefinitions>
-        <StackPanel VerticalAlignment="Center">
-            <Label Content="Название:"/>
-            <TextBox Text="{Binding Product.Name}"/>
-            <Label Content="Описание:"/>
-            <TextBox Text="{Binding Product.Description}"/>
-            <Label Content="Первоначальная цена:"/>
-            <TextBox Text="{Binding Product.PriceStart}"/>
-            <Label Content="Конечная цена:"/>
-            <TextBox Text="{Binding Product.PriceEnd}"/>
-            
-            <Label Content="Статус:"/>
+
+        <StackPanel VerticalAlignment="Center" Height="409">
+            <Label Content="Название:" FontWeight="Bold"/>
+            <TextBox Text="{Binding Product.Name}" Background="White" BorderBrush="Black"/>
+            <Label Content="Описание:" FontWeight="Bold"/>
+            <TextBox Text="{Binding Product.Description}" Background="White" BorderBrush="Black"/>
+            <Label Content="Первоначальная цена:" FontWeight="Bold"/>
+            <TextBox Text="{Binding Product.PriceStart}" Background="White" BorderBrush="Black"/>
+            <Label Content="Конечная цена:" FontWeight="Bold"/>
+            <TextBox Text="{Binding Product.PriceEnd}" Background="White" BorderBrush="Black"/>
+
+            <Label Content="Статус:" FontWeight="Bold"/>
             <ComboBox ItemsSource="{Binding Statuses}" 
-                      SelectedItem="{Binding SelectStatus}" 
-                      DisplayMemberPath="Title"/>
-            <Label Content="Дата продажи:"/>
-            <DatePicker SelectedDate="{Binding Product.DateOfsale}" IsEnabled="{Binding Block}"/>
+                          SelectedItem="{Binding SelectStatus}" 
+                          DisplayMemberPath="Title" Background="White" BorderBrush="Black" OpacityMask="Black"/>
+            <Label Content="Дата продажи:" FontWeight="Bold"/>
+            <DatePicker Background="White" SelectedDate="{Binding Product.DateOfsale}" IsEnabled="{Binding Block}">
+
+            </DatePicker>
         </StackPanel>
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Image Height="250" Width="250" Source="{Binding Product.Foto}"/>
-            <Button Content="Выбрать картинку" Command="{Binding LoadImage}"/>
-        </StackPanel>
-        <Button Command="{Binding Save}" Content="Сохранить" FontSize="20" VerticalAlignment="Bottom" HorizontalAlignment="Center" Grid.ColumnSpan="2"/>
+
+        <Border Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="#FFC8743E" BorderThickness="5,5,5,5">
+            <StackPanel >
+                <Image Height="250" Width="250" Source="{Binding Product.Foto}" OpacityMask="Black"/>
+                <Button Content="Выбрать картинку" Command="{Binding LoadImage}" Height="30" Background="White"/>
+            </StackPanel>
+        </Border>
+
+        <Button Command="{Binding Save}"  Content="Сохранить" FontSize="20" VerticalAlignment="Bottom"  Width="160" Height="35" Grid.ColumnSpan="2" Background="White" />
     </Grid>
-    
+
 </Window>

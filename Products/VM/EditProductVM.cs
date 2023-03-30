@@ -41,8 +41,13 @@ namespace Products.VM
                 if (selectStatus?.Id == 1)
                     Block = true;
                 else
+                {
                     Block = false;
+                    Product.DateOfsale = null;
+                }
+                    
                 Signal();
+                Signal(nameof(Product));
                 Signal(nameof(Block));
 
             }
@@ -58,7 +63,7 @@ namespace Products.VM
             Statuses = db.Statuses.Local.ToObservableCollection();
             SelectStatus = Statuses.FirstOrDefault(s=>s.Id==Product.IdStatus);
 
-
+            
 
             LoadImage = new CustomCommand(() =>
             {
@@ -71,23 +76,32 @@ namespace Products.VM
             });
             Save = new CustomCommand(() =>
             {
-                if(Block == true && Product.DateOfsale == null)
+                try
                 {
-                    MessageBox.Show("Необходимо выбрать дату продажи");
-                    return;
+                    if(Block == true && Product.DateOfsale == null)
+                    {
+                        MessageBox.Show("Необходимо выбрать дату продажи");
+                        return;
+                    }
+                    Product.IdStatus = SelectStatus?.Id;
+                    if (Product.Id == 0)
+                    {
+                        DBInstance.GetInstance().Products.Add(Product);
+                    }
+                    else
+                    {
+                        Product.IdStatusNavigation = SelectStatus;
+                        DBInstance.GetInstance().Entry(Product).State = EntityState.Modified;
+                    }
+                    DBInstance.GetInstance().SaveChanges();
+                    MessageBox.Show("OK");
                 }
-                Product.IdStatus = SelectStatus?.Id;
-                if (Product.Id == 0)
+                catch
                 {
-                    DBInstance.GetInstance().Products.Add(Product);
+                    Save.Execute(null);
+                    
                 }
-                else
-                {
-                    Product.IdStatusNavigation = SelectStatus;
-                    DBInstance.GetInstance().Entry(Product).State = EntityState.Modified;
-                }
-                DBInstance.GetInstance().SaveChanges();
-                MessageBox.Show("OK");
+                
 
             });
         }
