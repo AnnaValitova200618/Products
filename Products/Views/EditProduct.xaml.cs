@@ -23,7 +23,7 @@ namespace Products.Views
         public EditProduct(Model.Product product)
         {
             InitializeComponent();
-            DataContext = new EditProductVM(product);
+            DataContext = new EditProductVM(product, () => Close());
         }
     }
 }

@@ -5,14 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Products.Views"
         mc:Ignorable="d"
-        Title="Редактирование" MinHeight="450" MinWidth="800" WindowStartupLocation="CenterScreen">
+        Title="Редактирование" MinHeight="500" MinWidth="800" WindowStartupLocation="CenterScreen">
     <Grid Background="#FFF1C95F">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="Auto" MinWidth="292" />
+            <ColumnDefinition Width="Auto" MinWidth="250" />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-        <StackPanel VerticalAlignment="Center" Height="409">
+        <StackPanel VerticalAlignment="Center">
             <Label Content="Название:" FontWeight="Bold"/>
             <TextBox Text="{Binding Product.Name}" Background="White" BorderBrush="Black"/>
             <Label Content="Описание:" FontWeight="Bold"/>
@@ -39,7 +43,7 @@
             </StackPanel>
         </Border>
 
-        <Button Command="{Binding Save}"  Content="Сохранить" FontSize="20" VerticalAlignment="Bottom"  Width="160" Height="35" Grid.ColumnSpan="2" Background="White" />
+        <Button Command="{Binding Save}" Grid.Row="1"  Content="Сохранить" FontSize="20" VerticalAlignment="Bottom"  Width="160" Height="35" Grid.ColumnSpan="2" Background="White" />
     </Grid>
 
 </Window>
