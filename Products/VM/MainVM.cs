@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Products.DB;
 using Products.Model;
+using Products.Properties;
 using Products.Tools;
 using Products.Views;
 using System;
@@ -78,9 +79,15 @@ namespace Products.VM
             Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
             Statuses = db.Statuses.Local.ToObservableCollection();
 
+            if (Statuses.Count == 0)
+            {
+                Statuses.Add(new Status { Title = "Продано" });
+                Statuses.Add(new Status { Title = "Не продано" });
+            }
+
             AddProduct = new CustomCommand(() =>
             {
-                new EditProduct(new Product()).ShowDialog();
+                new EditProduct(new Product { Foto = Resources.dummy }).ShowDialog();
                 Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
 
             });
@@ -102,7 +109,7 @@ namespace Products.VM
             });
             DelProduct = new CustomCommand(() =>
             {
-                if(MessageBox.Show("Вы действительно хотите удалить выбранный продукт", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if(SelectProduct != null && MessageBox.Show("Вы действительно хотите удалить выбранный продукт?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     DBInstance.GetInstance().Products.Remove(SelectProduct);
                     DBInstance.GetInstance().SaveChanges();

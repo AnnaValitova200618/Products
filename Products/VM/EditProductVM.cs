@@ -55,7 +55,7 @@ namespace Products.VM
         DbProductContext db = new DbProductContext();
         
 
-        public EditProductVM(Product product)
+        public EditProductVM(Product product, Action close)
         {
             db.Products.Load();
             db.Statuses.Load();
@@ -94,7 +94,8 @@ namespace Products.VM
                         DBInstance.GetInstance().Entry(Product).State = EntityState.Modified;
                     }
                     DBInstance.GetInstance().SaveChanges();
-                    MessageBox.Show("OK");
+                    MessageBox.Show("Сохранено");
+                    close();
                 }
                 catch
                 {
