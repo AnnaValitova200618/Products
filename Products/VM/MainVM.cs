@@ -59,16 +59,44 @@ namespace Products.VM
         private void DoSearch()
         {
             ObservableCollection<Product> products = 
-                new ObservableCollection<Product>(db.Products.Include("IdStatusNavigation").Where(s => s.Name.Contains(Search)));
+                new ObservableCollection<Product>(db.Products.Include("IdStatusNavigation").ToList().
+                Where(s => NechotkiyPoisk(s.Name, Search)));
             
 
             if (SelectStatus != null)
             {
-                products = new ObservableCollection<Product>(db.Products.Include("IdStatusNavigation").Where(s => s.IdStatus == SelectStatus.Id));
+                products = new ObservableCollection<Product>(db.Products.Include("IdStatusNavigation").
+                    Where(s => s.IdStatus == SelectStatus.Id));
             }
            
             Products = products;
         }
+
+        private bool NechotkiyPoisk(string? name, string search)
+        {
+            int diff = 0;
+            if (name == null)
+                return false;
+            int diff_lengh = search.Length - name.Length;
+            int min = Math.Abs(name.Length > search.Length ? search.Length : name.Length);
+            if (diff_lengh > 3)
+            {
+                return false;
+            }
+            for(int i = 0; i < min; i++)
+            {
+                if (search[i] != name[i])
+                {
+                    diff++;
+                }
+            }
+            int sum = diff + diff_lengh;
+            if(sum <= 3)
+                return true;
+            return false;
+
+        }
+
         DbProductContext db;
         public MainVM()
         {
@@ -76,7 +104,8 @@ namespace Products.VM
             db.Database.EnsureCreated();
             db.Products.Load();
             db.Statuses.Load();
-            Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
+            Products = new ObservableCollection<Product>(db.Products.
+                Include(s => s.IdStatusNavigation).ToList());
             Statuses = db.Statuses.Local.ToObservableCollection();
 
             if (Statuses.Count == 0)
@@ -88,7 +117,8 @@ namespace Products.VM
             AddProduct = new CustomCommand(() =>
             {
                 new EditProduct(new Product { Foto = Resources.dummy }).ShowDialog();
-                Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
+                Products = new ObservableCollection<Product>(db.Products.
+                    Include(s => s.IdStatusNavigation).ToList());
 
             });
             EditProduct = new CustomCommand(() =>
@@ -103,17 +133,21 @@ namespace Products.VM
                     
                     new EditProduct(SelectProduct).ShowDialog();
 
-                    Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
+                    Products = new ObservableCollection<Product>(db.Products.
+                        Include(s => s.IdStatusNavigation).ToList());
 
                 }
             });
             DelProduct = new CustomCommand(() =>
             {
-                if(SelectProduct != null && MessageBox.Show("Вы действительно хотите удалить выбранный продукт?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if(SelectProduct != null && 
+                MessageBox.Show("Вы действительно хотите удалить выбранный продукт?", "", 
+                MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     DBInstance.GetInstance().Products.Remove(SelectProduct);
                     DBInstance.GetInstance().SaveChanges();
-                    Products = new ObservableCollection<Product>(db.Products.Include(s => s.IdStatusNavigation).ToList());
+                    Products = new ObservableCollection<Product>(db.Products.
+                        Include(s => s.IdStatusNavigation).ToList());
                 }
                 
             });
